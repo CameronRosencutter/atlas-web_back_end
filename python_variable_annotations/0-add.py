@@ -1,8 +1,11 @@
+#!/usr/bin/env python3
+'''Add 2 different numbers.'''
+
 def add(a: float, b: float) -> float:
     result = a + b
     return result
 
-num1 = 444
-num2 = 2.0
-result_sum = add(num1, num2)
-print(f"{num1} and {num2} equals... {result_sum}")
+a = 4
+b = 3
+result_sum = add(a, b)
+print(f"{a} and {b} equals... {result_sum}")
