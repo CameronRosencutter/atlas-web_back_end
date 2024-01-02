@@ -4,4 +4,4 @@
 
 def concatenate_and_print(string1, string2):
     result = string1 + string2
-    print(result)
+    return(result)
