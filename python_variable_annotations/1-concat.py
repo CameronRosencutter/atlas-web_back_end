@@ -2,6 +2,5 @@
 '''Take str1 and str2 to and concencate as one.'''
 
 
-def concatenate_and_print(string1, string2):
-    result = string1 + string2
-    return(result)
+def concat(str1: str, str2: str) -> str:
+    return str(str1 + str2)
