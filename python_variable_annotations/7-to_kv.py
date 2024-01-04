@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+'''info'''
 
 
 from typing import Union, Tuple
