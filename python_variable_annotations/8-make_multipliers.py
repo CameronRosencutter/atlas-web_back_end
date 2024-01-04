@@ -1,3 +1,7 @@
+#!/usr/bin/env python3
+'''wtire a annotated function'''
+
+
 from typing import Callable
 
 
