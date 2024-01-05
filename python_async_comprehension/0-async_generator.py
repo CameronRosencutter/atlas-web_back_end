@@ -1,17 +1,12 @@
 #!/usr/bin/env python3
-'''take no arguments'''
-
+"""takes no arguments"""
 import asyncio
 import random
+from typing import Generator
 
 
-async def async_generator():
-    for _ in range(10):
+async def async_generator() -> Generator[float, None, None]:
+    """return a list of floats random"""
+    for i in range(10):
         await asyncio.sleep(1)
         yield random.uniform(0, 10)
-
-
-# Example of using the async_generator coroutine
-async def main():
-    async for number in async_generator():
-        print(number)
