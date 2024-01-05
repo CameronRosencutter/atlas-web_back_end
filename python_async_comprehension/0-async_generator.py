@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
-"""takes no arguments"""
+"""write random number from 1 - 10"""
+
+
 import asyncio
 import random
 from typing import Generator
 
 
 async def async_generator() -> Generator[float, None, None]:
-    """return a list of floats random"""
-    for i in range(10):
+    """Async generator that yields random numbers between 0 and 10"""
+    for _ in range(10):
         await asyncio.sleep(1)
         yield random.uniform(0, 10)
+        
