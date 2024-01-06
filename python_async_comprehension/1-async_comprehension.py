@@ -2,7 +2,6 @@
 """find 10 numbers."""
 
 
-import asyncio
 from typing import List
 
 
