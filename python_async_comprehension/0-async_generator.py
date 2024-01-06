@@ -4,6 +4,7 @@
 import asyncio
 import random
 
+
 async def async_generator():
     """morewords"""
     for _ in range(10):
