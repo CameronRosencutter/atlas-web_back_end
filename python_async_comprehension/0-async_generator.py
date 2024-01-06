@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-'''words'''
+'''please please please work'''
 
 import asyncio
 import random
 
 
 async def async_generator():
-    """morewords"""
+    """I dont know what is wrong anytmore"""
     for _ in range(10):
         await asyncio.sleep(1)
         yield random.randint(0, 10)
@@ -14,7 +14,7 @@ async def async_generator():
 
 # Example usage
 async def main():
-    """moremorewords"""
+    """Am i eternally curesed? Why why why!!"""
     async for number in async_generator():
         print(number)
 
