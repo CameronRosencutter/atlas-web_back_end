@@ -1,17 +1,16 @@
 #!/usr/bin/env python3
-"""please please work for me"""
-
-
+""" Using asyncio.gather() to run 4 async generators in paralell """
 import asyncio
+import time
 async_comprehension = __import__('1-async_comprehension').async_comprehension
 
 
 async def measure_runtime() -> float:
-    """you wanna work. i know you do"""
-    inicio = asyncio.get_event_loop().time()
-    await asyncio.gather(async_comprehension(),
-                         async_comprehension(),
-                         async_comprehension(),
-                         async_comprehension())
-    fin = asyncio.get_event_loop().time()
-    return fin - inicio
+    """
+    Measures the runtime of 4 async generators in paralell
+    : return(float) : runtime of 4 async generators in paralell
+    """
+    start = time.time()
+    await asyncio.gather(*(async_comprehension() for i in range(4)))
+    end = time.time()
+    return end - start
