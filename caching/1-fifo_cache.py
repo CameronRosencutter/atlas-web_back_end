@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-"""2 problem"""
+"""importing the base_caching file needed"""
 BaseCaching = __import__('base_caching').BaseCaching
 
 
@@ -12,7 +12,7 @@ class FIFOCache(BaseCaching):
         super().__init__()
 
     def put(self, key, item):
-        """ Add"""
+        """ This is the add function that will operate at the end"""
         if key is not None and item is not None:
             if len(self.cache_data) >= BaseCaching.MAX_ITEMS:
                 discarded_key = next(iter(self.cache_data))
@@ -21,6 +21,5 @@ class FIFOCache(BaseCaching):
             self.cache_data[key] = item
 
     def get(self, key):
-        """gt """
+        """This si the get function that will run at the end"""
         return self.cache_data.get(key, None)
-    
