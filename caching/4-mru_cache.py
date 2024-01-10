@@ -5,8 +5,12 @@ BaseCaching = __import__('base_caching').BaseCaching
 
 
 class MRUCache(BaseCaching):
+    """MRU Cache Implementation
+
+    This class inherits from the BaseCaching class
+    """
     def __init__(self):
-        """This is the init function needed"""
+        """Initialize an empty MRU cache."""
         super().__init__()
 
     def put(self, key, item):
