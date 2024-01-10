@@ -1,23 +1,11 @@
 #!/usr/bin/env python3
 
-"""
-    A basic caching algorithm.
-
-    Attributes:
-        capacity (int): Maximum number of items the cache can hold.
-        cache (dict): Dictionary to store key-value pairs.
-    """
+"""This is importing base_caching from the current repo. """
 BaseCaching = __import__('base_caching').BaseCaching
 
 
 class BasicCache(BaseCaching):
-        """
-    A basic caching algorithm.
-
-    Attributes:
-        capacity (int): Maximum number of items the cache can hold.
-        cache (dict): Dictionary to store key-value pairs.
-    """
+    """Im not super sure what to say here. Im barely understanding this."""
 
     def put(self, key, item):
         """put"""
