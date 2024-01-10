@@ -11,4 +11,7 @@ class BasicCache(BaseCaching):
         """Here are more words to see if this is whats counting."""
         if key is not None and item is not None:
             self.cache_data[key] = item
-            
+
+    def get(self, key):
+        """Retrieve a value from the cache."""
+        return self.cache_data.get(key, None)
