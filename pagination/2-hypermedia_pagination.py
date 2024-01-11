@@ -52,6 +52,36 @@ def get_hyper(page: int = 1, page_size: int = 10):
     next_page = page + 1 if page * page_size < len(dataset_page) else None
     prev_page = page - 1 if page > 1 else None
 
+
+def get_hyper_index(index: int = None, page_size: int = 10):
+    """This is the hyper index function"""
+    assert isinstance(index, (int, type(None))) and 
+    (index is None or index >= 0)
+    "Index must be None or a non-negative integer"
+    assert isinstance(page_size, int) and page_size > 0
+    "Page size must be an integer greater than 0"
+
+    # Load data from the CSV file (replace 'your_csv_file.csv' with the actual file name)
+    with open('your_csv_file.csv', 'r') as file:
+        reader = csv.reader(file)
+        dataset = list(reader)
+
+    if index is not None:
+        assert index < len(dataset), "Index out of range"
+
+    # Calculate the start index for the given index and page size
+    start_index = index if index is not None else 0
+
+    # Calculate the end index for the current page
+    end_index = start_index + page_size
+
+    # Return the appropriate page of the dataset
+    data = dataset[start_index:end_index]
+
+    # Calculate the next index to query with
+    next_index = end_index
+    
+    
     return {
         'page_size': len(dataset_page),
         'page': page,
@@ -60,3 +90,4 @@ def get_hyper(page: int = 1, page_size: int = 10):
         'prev_page': prev_page,
         'total_pages': total_pages
     }
+    
