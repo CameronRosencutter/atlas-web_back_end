@@ -16,7 +16,7 @@ def index_range(page, page_size):
     return start_index, end_index
 
 
-def get_page(page=1, page_size=10):
+def get_page(page: int = 1, page_size: int = 10):
     """This is used to find page amount"""
     # Check if page and page_size are integers greater than 0
     assert isinstance(page, int) and page > 0
