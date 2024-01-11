@@ -5,6 +5,7 @@ import csv
 
 
 def index_range(page, page_size):
+    """this is the index range for page and pagesize"""
     # Calculate the start index for the given page and page size
     start_index = (page - 1) * page_size
 
