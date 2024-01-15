@@ -5,6 +5,8 @@ import re
 from typing import List
 import logging
 
+PII_FIELDS = ('phone', 'password', 'email', 'ssn', 'name')
+
 
 class RedactingFormatter(logging.Formatter):
     """ Redacting Formatter class
@@ -16,10 +18,14 @@ class RedactingFormatter(logging.Formatter):
 
     def __init__(self):
         super(RedactingFormatter, self).__init__(self.FORMAT)
+        self.fields = fields
 
     def format(self, record: logging.LogRecord) -> str:
-        NotImplementedError
-        return message
+        log_message = super().format(record)
+        # print(log_message)
+        result = filter_datum(self.fields, self.REDACTION,
+                              log_message, self.SEPARATOR)
+        return(result)
 
 
 def filter_datum(fields: List[str], redaction: str,
