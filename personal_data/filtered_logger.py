@@ -19,7 +19,8 @@ class RedactingFormatter(logging.Formatter):
 
     def format(self, record: logging.LogRecord) -> str:
         NotImplementedError
-        
+        return (result)
+
 
 def filter_datum(fields: List[str], redaction: str,
                  message: str, separator: str) -> str:
