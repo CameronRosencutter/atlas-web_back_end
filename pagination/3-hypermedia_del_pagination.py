@@ -55,7 +55,7 @@ def get_hyper(page: int = 1, page_size: int = 10):
 
 def get_hyper_index(index: int = None, page_size: int = 10):
     """This is the hyper index function"""
-    assert isinstance(index, (int, type(None))) and 
+    assert isinstance(index, (int, type(None))) and
     (index is None or index >= 0)
     "Index must be None or a non-negative integer"
     assert isinstance(page_size, int) and page_size > 0
