@@ -11,6 +11,7 @@ app = Flask(__name__)
 # New error handler for 401 Unauthorized
 @app.errorhandler(401)
 def unauthorized_error(error):
+    """reports back if an unauthorized error occurs"""
     response = jsonify({"error": "Unauthorized"})
     response.status_code = 401
     return response
