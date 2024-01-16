@@ -9,5 +9,6 @@ index = Blueprint('index', __name__)
 
 @index.route('/api/v1/unauthorized', methods=['GET'])
 def unauthorized_endpoint():
+    """IF its unauthorized, it aborts as a 401"""
     # Raise a 401 error using abort
     abort(401)
