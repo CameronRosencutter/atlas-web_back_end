@@ -31,6 +31,33 @@ class RedactingFormatter(logging.Formatter):
                               log_message, self.SEPARATOR)
         return result
 
+def main():
+    """Retrieve all rows in the users table and
+    display each row in a filtered format."""
+    logger = get_logger()
+    db = get_db()
+    cursor = db.cursor()
+
+    # Retrieve all rows in the users table
+    cursor.execute("SELECT * FROM users;")
+    rows = cursor.fetchall()
+
+    # Display each row in a filtered format
+    for row in rows:
+        filtered_row = filter_datum(
+            PII_FIELDS, RedactingFormatter.REDACTION, str(row), ";"
+            )
+        logger.info(
+            "[HOLBERTON] user_data INFO %s: %s;",
+            str(datetime.datetime.now()), filtered_row
+            )
+
+    # Display filtered fields
+    logger.info("Filtered fields:\n%s", "\n".join(PII_FIELDS))
+
+    cursor.close()
+    db.close()
+
 
 def filter_datum(fields: List[str], redaction: str,
                  message: str, separator: str) -> str:
@@ -42,7 +69,7 @@ def filter_datum(fields: List[str], redaction: str,
 
 
 def get_logger() -> logging.Logger:
-    """I really hope this works..."""
+    """I really hope this"""
     logger = logging.getLogger('user_data')
     logger.setLevel(logging.INFO)
     logger.propagate = False
