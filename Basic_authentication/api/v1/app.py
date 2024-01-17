@@ -24,3 +24,19 @@ app.register_blueprint(index)
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+
+# New error handler for 401 Unauthorized
+@app.errorhandler(401)
+def unauthorized_error(error):
+    """Reports back if an unauthorized error occurs"""
+    response = jsonify({"error": "Unauthorized"})
+    response.status_code = 401
+    return response
+
+
+# Blueprint registration
+app.register_blueprint(index)
+
+if __name__ == '__main__':
+    app.run(debug=True)
