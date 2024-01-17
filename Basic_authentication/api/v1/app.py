@@ -40,3 +40,15 @@ app.register_blueprint(index)
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+
+# Import the views blueprint
+from api.v1.views.index import bp as views_bp
+
+# Register the views blueprint
+app.register_blueprint(views_bp)
+
+# Custom error handler for 401
+@app.errorhandler(401)
+def unauthorized_error(error):
+    return render_template('401.html'), 401

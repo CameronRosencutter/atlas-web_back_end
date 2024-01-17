@@ -12,3 +12,10 @@ def unauthorized_endpoint():
     """IF its unauthorized, it aborts as a 401"""
     # Raise a 401 error using abort
     abort(401)
+
+
+@bp.route('/api/v1/unauthorized', methods=['GET'])
+def unauthorized():
+    # Raise a 401 error using abort
+    abort(401)
+    
