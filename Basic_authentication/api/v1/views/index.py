@@ -1,21 +1,38 @@
 #!/usr/bin/env python3
-"""This is the index.py"""
+""" Module of Index views
+"""
+from flask import jsonify, abort
+from api.v1.views import app_views
 
-from flask import Blueprint, abort
 
-index = Blueprint('index', __name__)
+@app_views.route('/status', methods=['GET'], strict_slashes=False)
+def status() -> str:
+    """ GET /api/v1/status
+    Return:
+      - the status of the API
+    """
+    return jsonify({"status": "OK"})
 
-# Existing routes...
 
-@index.route('/api/v1/unauthorized', methods=['GET'])
-def unauthorized_endpoint():
-    """IF its unauthorized, it aborts as a 401"""
-    # Raise a 401 error using abort
+@app_views.route('/stats/', strict_slashes=False)
+def stats() -> str:
+    """ GET /api/v1/stats
+    Return:
+      - the number of each objects
+    """
+    from models.user import User
+    stats = {}
+    stats['users'] = User.count()
+    return jsonify(stats)
+
+
+@app_views.route('/forbidden', methods=['GET'], strict_slashes=False)
+def forbidden() -> str:
+    """ GET /api/v1/forbidden """
+    abort(403)
+
+
+@app_views.route('/unauthorized', methods=['GET'], strict_slashes=False)
+def unauthorized() -> str:
+    """ GET /api/v1/unauthorized """
     abort(401)
-
-
-@bp.route('/api/v1/unauthorized', methods=['GET'])
-def unauthorized():
-    # Raise a 401 error using abort
-    abort(401)
-    
