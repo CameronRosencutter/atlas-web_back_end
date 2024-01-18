@@ -99,3 +99,7 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
     )
 
     return db
+
+
+if __name__ == "__main__":
+    main()
