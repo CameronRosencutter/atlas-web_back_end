@@ -36,9 +36,9 @@ def login():
     try:
         email = request.form.get("email")
         password = request.form.get("password")
-        
+
         user = AUTH.authenticate_user(email, password)
-        
+
         if user is None:
             abort(401)  # Unauthorized
 
@@ -52,4 +52,3 @@ def login():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
-    
