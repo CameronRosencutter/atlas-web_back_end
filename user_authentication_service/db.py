@@ -4,8 +4,9 @@ This is the db.py file
 """
 
 
+from sqlalchemy import create_engine
 from sqlalchemy.exc import IntegrityError
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import sessionmaker, Session
 
 # Existing imports...
 
