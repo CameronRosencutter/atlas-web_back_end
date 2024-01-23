@@ -1,24 +1,23 @@
 #!/usr/bin/env python3
+"""this is the db.py file
 """
-This is the db.py file
-"""
-
-
 from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker, Session
-from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm.session import Session
+from sqlalchemy.exc import InvalidRequestError
+from sqlalchemy.orm.exc import NoResultFound
 
-# Import the Base class from the user module
-from user import Base
+from user import Base, User
+
 
 class DB:
-    # Existing code...
+    """DB class
+    """
 
     def __init__(self) -> None:
-        """Initialize a new DB instance
+        """This is the init thing
         """
-        self._engine = create_engine("sqlite:///a.db", echo=True)
+        self._engine = create_engine("sqlite:///a.db", echo=False)
         Base.metadata.drop_all(self._engine)
         Base.metadata.create_all(self._engine)
         self.__session = None
@@ -32,30 +31,33 @@ class DB:
             self.__session = DBSession()
         return self.__session
 
-    def add_user(self, email: str, hashed_password: str):
-        """Add a new user to the database.
-
-        Args:
-            email (str): User's email address.
-            hashed_password (str): Hashed password for the user.
-
-        Returns:
-            User: The created User object.
+    def add_user(self, email: str, hashed_password: str) -> User:
+        """Add a new user to the database
         """
-        from user import User  # Import the User class
-
-        # Create a new User instance
         new_user = User(email=email, hashed_password=hashed_password)
-
-        # Add the user to the session
         self._session.add(new_user)
-
-        try:
-            # Commit the changes to the database
-            self._session.commit()
-        except IntegrityError as e:
-            # Handle integrity errors, for example, if the email is not unique
-            self._session.rollback()
-            raise ValueError("User with this email already exists.") from e
-
+        self._session.commit()
         return new_user
+
+    def find_user_by(self, **kwargs) -> User:
+        """Finds a user by arbitrary keyword arguments.
+        """
+        try:
+            query = self._session.query(User).filter_by(**kwargs).first()
+            if query is None:
+                raise NoResultFound
+            return query
+        except InvalidRequestError:
+            raise
+
+    def update_user(self, user_id: int, **kwargs) -> None:
+        """Update a users set attributes
+        """
+        user = self.find_user_by(id=user_id)
+
+        for key, value in kwargs.items():
+            if not hasattr(user, key):
+                raise ValueError
+            setattr(user, key, value)
+
+        self._session.commit()
