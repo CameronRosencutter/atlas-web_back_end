@@ -10,7 +10,6 @@ from sqlalchemy.orm import sessionmaker, Session
 
 # Existing imports...
 
-
 class DB:
     # Existing code...
 
