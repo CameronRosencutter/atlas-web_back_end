@@ -8,9 +8,11 @@ from auth import Auth
 app = Flask(__name__)
 AUTH = Auth()
 
+
 @app.route("/")
 def welcome():
     return jsonify({"message": "Bienvenue"})
+
 
 @app.route("/users", methods=["POST"])
 def register_user():
@@ -20,9 +22,10 @@ def register_user():
         
         AUTH.register_user(email, password)
         
-        return jsonify({"email": email, "message": "user created"}), 200  # Set the status code to 200
+        return jsonify({"email": email, "message": "user created"}), 200
     except ValueError as e:
         return jsonify({"message": str(e)}), 400
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
