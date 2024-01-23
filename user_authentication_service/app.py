@@ -20,7 +20,7 @@ def register_user():
         
         AUTH.register_user(email, password)
         
-        return jsonify({"email": email, "message": "user created"}), 200
+        return jsonify({"email": email, "message": "user created"}), 200  # Set the status code to 200
     except ValueError as e:
         return jsonify({"message": str(e)}), 400
 
