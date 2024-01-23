@@ -3,12 +3,31 @@
 This is the db.py file
 """
 
-from sqlalchemy.exc import IntegrityError  # Import this for handling potential integrity errors
+
+from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm import Session
 
 # Existing imports...
 
 class DB:
     # Existing code...
+
+    def __init__(self) -> None:
+        """Initialize a new DB instance
+        """
+        self._engine = create_engine("sqlite:///a.db", echo=True)
+        Base.metadata.drop_all(self._engine)
+        Base.metadata.create_all(self._engine)
+        self.__session = None
+
+    @property
+    def _session(self) -> Session:
+        """Memoized session object
+        """
+        if self.__session is None:
+            DBSession = sessionmaker(bind=self._engine)
+            self.__session = DBSession()
+        return self.__session
 
     def add_user(self, email: str, hashed_password: str):
         """Add a new user to the database.
