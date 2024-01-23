@@ -33,6 +33,17 @@ class Auth:
         # Return the User object
         return new_user
 
+
+    def valid_login(self, email: str, password: str) -> bool:
+        # Locate the user by email
+        user = self._db.get_user_by_email(email)
+
+        # Check if the user exists and the password matches
+        if user and bcrypt.checkpw(password.encode('utf-8'), user.hashed_password):
+            return True
+
+        return False
+
     @staticmethod
     def _hash_password(password: str) -> bytes:
         """This will hide and limit the password"""
