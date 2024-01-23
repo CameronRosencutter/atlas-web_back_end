@@ -29,3 +29,27 @@ def register_user():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
+
+
+@app.route("/sessions", methods=["POST"])
+def login():
+    try:
+        email = request.form.get("email")
+        password = request.form.get("password")
+        
+        user = AUTH.authenticate_user(email, password)
+        
+        if user is None:
+            abort(401)  # Unauthorized
+
+        # Create a new session for the user and store it as a cookie
+        session_id = AUTH.create_session(user)
+        response = jsonify({"email": email, "message": "logged in"})
+        response.set_cookie("session_id", session_id)
+        return response
+    except ValueError as e:
+        return jsonify({"message": str(e)}), 401
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)
+    
