@@ -5,10 +5,12 @@ This is the db.py file
 
 
 from sqlalchemy import create_engine
-from sqlalchemy.exc import IntegrityError
+from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, Session
+from sqlalchemy.exc import IntegrityError
 
-# Existing imports...
+# Import the Base class from the user module
+from user import Base
 
 class DB:
     # Existing code...
