@@ -9,9 +9,9 @@ from sqlalchemy.orm import Session
 
 # Existing imports...
 
+
 class DB:
     # Existing code...
-
 
     def __init__(self) -> None:
         """Initialize a new DB instance
