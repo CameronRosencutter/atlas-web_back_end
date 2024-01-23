@@ -4,35 +4,24 @@
 
 from db import DB
 from user import User  # Assuming you have a User class defined
+import bcrypt
 
 class Auth:
     """Auth class to interact with the authentication database.
     """
 
     def __init__(self):
-        """This is where the inut is
-        """
+        """This is the init function"""
         self._db = DB()
 
     def register_user(self, email: str, password: str) -> User:
-        """_summary_
-
-        Args:
-            email (str): _description_
-            password (str): _description_
-
-        Raises:
-            ValueError: _description_
-
-        Returns:
-            User: _description_
-        """
+        """This will register user in the system"""
         # Check if the user already exists with the given email
         existing_user = self._db.get_user_by_email(email)
         if existing_user:
             raise ValueError(f"User {email} already exists.")
 
-        # Hash the password using your _hash_password method
+        # Hash the password using bcrypt
         hashed_password = self._hash_password(password)
 
         # Create a new User object
@@ -44,16 +33,10 @@ class Auth:
         # Return the User object
         return new_user
 
-    def _hash_password(self, password: str) -> bytes:
-        """This is the hashpassword
-
-        Args:
-            password (str): password is a string
-
-        Returns:
-            bytes: This has bytes in it
-        """
-        # Implement your _hash_password method here (similar to the previous example)
-        # ...
+    @staticmethod
+    def _hash_password(password: str) -> bytes:
+        """This will hide and limit the password"""
+        # Hash the password using bcrypt
+        return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
 
 # Assuming you have a User class defined with an appropriate __init__ method
