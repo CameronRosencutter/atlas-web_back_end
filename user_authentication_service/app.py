@@ -2,53 +2,33 @@
 """this is the app.py file
 """
 
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, abort, redirect
 from auth import Auth
 
-app = Flask(__name__)
+
 AUTH = Auth()
 
+app = Flask(__name__)
 
-@app.route("/")
-def welcome():
+
+@app.route('/', methods=['GET'], strict_slashes=False)
+def hello_world():
+    """ Hello world """
     return jsonify({"message": "Bienvenue"})
 
 
-@app.route("/users", methods=["POST"])
-def register_user():
+@app.route('/users', methods=['POST'], strict_slashes=False)
+def users():
+    """ Register user """
+    email = request.form.get('email')
+    password = request.form.get('password')
     try:
-        email = request.form.get("email")
-        password = request.form.get("password")
-
-        AUTH.register_user(email, password)
-
-        return jsonify({"email": email, "message": "user created"}), 200
-    except ValueError as e:
-        return jsonify({"message": str(e)}), 200
+        new_user = AUTH.register_user(email, password)
+        return jsonify({"email": new_user.email, "message": "user created"})
+    except ValueError:
+        return jsonify({"message": "email already registered"}), 400
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
-
-
-@app.route("/sessions", methods=["POST"])
-def login():
-    try:
-        email = request.form.get("email")
-        password = request.form.get("password")
-
-        user = AUTH.authenticate_user(email, password)
-
-        if user is None:
-            abort(401)  # Unauthorized
-
-        # Create a new session for the user and store it as a cookie
-        session_id = AUTH.create_session(user)
-        response = jsonify({"email": email, "message": "logged in"})
-        response.set_cookie("session_id", session_id)
-        return response
-    except ValueError as e:
-        return jsonify({"message": str(e)}), 401
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    app.run(host="0.0.0.0", port="5000")
+    
