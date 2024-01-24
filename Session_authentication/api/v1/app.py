@@ -4,28 +4,49 @@ Route module for the API
 """
 from os import getenv
 from api.v1.views import app_views
-from api.v1.auth.auth import Auth
 from flask import Flask, jsonify, abort, request
 from flask_cors import (CORS, cross_origin)
 import os
+from api.v1.auth.auth import Auth
+from api.v1.auth.session_auth import SessionAuth
 
 
 app = Flask(__name__)
 app.register_blueprint(app_views)
 CORS(app, resources={r"/api/v1/*": {"origins": "*"}})
-
-auth_type = getenv("AUTH_TYPE")
 auth = None
-
-if auth_type == 'basic_auth':
-    from api.v1.auth.basic_auth import BasicAuth
-    auth = BasicAuth()
-elif auth_type == 'session_auth':
-    from api.v1.auth.session_auth import SessionAuth
-    auth = SessionAuth()
-elif auth_type:
-    from api.v1.auth.auth import Auth
+auth_type = os.environ.get('AUTH_TYPE')
+# print(auth_type)
+if auth_type == 'auth':
     auth = Auth()
+elif auth_type == 'session_auth':
+    auth = SessionAuth()
+
+
+@app.before_request
+def before_request() -> str:
+    '''Function filters request
+        made by client to implement
+        authentication'''
+    excluded_paths = ['/api/v1/status/',
+                      '/api/v1/unauthorized/',
+                      '/api/v1/forbidden/',
+                      '/api/v1/auth_session/login/']
+    if auth is None:
+        pass
+    elif (auth.require_auth(request.path, excluded_paths)
+          is False):
+        # print(auth.require_auth(request.path, excluded_paths))
+        pass
+    elif (not auth.authorization_header(request) and
+          not auth.session_cookie(request)):
+        abort(401)
+    else:
+        request.current_user = auth.current_user(request)
+        # print('request current user is ', request.current_user)
+        if request.current_user is None:
+            # print('request.current_user is none')
+            abort(403)
 
 
 @app.errorhandler(404)
@@ -35,32 +56,19 @@ def not_found(error) -> str:
     return jsonify({"error": "Not found"}), 404
 
 
-@app.errorhandler(403)
-def forbidden_error(error) -> str:
-    """ forbidden handler """
-    return jsonify({"error": "Forbidden"}), 403
-
-
 @app.errorhandler(401)
-def unauthorized_error(error) -> str:
-    """ Not authorized handler
-    """
+def not_authorized(error) -> str:
+    ''' User not authorized
+        error'''
     return jsonify({"error": "Unauthorized"}), 401
 
 
-@app.before_request
-def before_request():
-    """Filters requests to error handlers
-    """
-    path_list = ['/api/v1/status/',
-                 '/api/v1/unauthorized',
-                 '/api/v1/forbidden']
-    if auth and auth.require_auth(request.path, path_list):
-        if auth.authorization_header(request) is None:
-            abort(401)
-        if auth.current_user(request) is None:
-            abort(403)
-        request.current_user = auth.current_user(request)
+@app.errorhandler(403)
+def forbidden(error) -> str:
+    '''User Forbidden
+        error, return json
+        data'''
+    return jsonify({"error": "Forbidden"}), 403
 
 
 if __name__ == "__main__":
