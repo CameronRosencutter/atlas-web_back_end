@@ -1,68 +1,69 @@
 #!/usr/bin/env python3
-"""
-Session_auth
-"""
-import uuid
-from .auth import Auth
+'''
+This is the session_auth.py file
+'''
+from api.v1.auth.auth import Auth
 from models.user import User
+from flask import request
+import os
+import uuid
+import base64
 
 
 class SessionAuth(Auth):
-    """ SessionAuth class
+    '''For the class session and author'''
 
-    Args:
-        Auth (class) : Inherits from Auth
-    """
-    user_id_by_session_id = {}
+    user_id_by_session_id: dict = {}
 
-    def create_session(self, user_id: str = None) -> str:
-        """ Creates a Session ID for a user_id
+    def __init__(self) -> None:
+        '''This is the init file'''
+        super().__init__()
 
-        Args:
-            user_id (str, optional): User ID. Defaults to None.
-
-        Returns:
-            str: Session ID
-        """
-        if user_id is None:
+    def create_session(self,
+                       user_id: str = None
+                       ) -> str:
+        '''Create a session for the user'''
+        if (not user_id or
+           not isinstance(user_id, str)):
             return None
-        if not isinstance(user_id, str):
+        else:
+            session_id = str(uuid.uuid4())
+            self.user_id_by_session_id[session_id] = user_id
+            return session_id
+
+    def user_id_for_session_id(self,
+                               session_id: str = None
+                               ) -> str:
+        '''Find the id for the session'''
+        if (not session_id or
+           not isinstance(session_id, str)):
             return None
-        # Generate a session ID
-        session_id = str(uuid.uuid4())
-        # Link the user_id to the session_id
-        self.user_id_by_session_id[session_id] = user_id
-
-        # Return the session ID
-        return session_id
-
-    def user_id_for_session_id(self, session_id: str = None) -> str:
-        """ Returns a User ID based on a Session ID
-
-        Args:
-            session_id (str, optional): Session ID. Defaults to None.
-
-        Returns:
-            str: User ID or None
-        """
-        if session_id is None:
-            return None
-        if not isinstance(session_id, str):
-            return None
-        # Return the user_id associated with the session_id
-        return self.user_id_by_session_id.get(session_id)
+        user_id = self.user_id_by_session_id.get(session_id)
+        return user_id
 
     def current_user(self, request=None):
-        """ Returns a User instance based on a cookie value
+        '''Determinies who is the current user'''
+        session_cookie = str(self.session_cookie(request))
+        # print('session cookie is:', session_cookie)
+        current_user = self.user_id_for_session_id(session_cookie)
+        # print('current user is:', current_user)
 
-        Args:
-            request (_type_, optional): flask request. Defaults to None.
-        """
-        session_id = self.session_cookie(request)
-        if not session_id:
-            return None
-        user_id = self.user_id_for_session_id(session_id)
+        user_cls = User()
+        user = user_cls.get(current_user)
+        # print('user is:', user)
+
+        return user
+
+    def destroy_session(self, request=None):
+        '''Terminates the session witht he current user'''
+        cookie_value = self.session_cookie(request)
+        if (not request or
+           not cookie_value):
+            return False
+
+        user_id = self.user_id_for_session_id(cookie_value)
         if not user_id:
-            return None
-        # Return the User ID
-        return User.get(user_id)
+            return False
+
+        del self.user_id_by_session_id[cookie_value]
+        return True
