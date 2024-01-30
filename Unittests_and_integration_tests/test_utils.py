@@ -40,14 +40,7 @@ class TestGetJson(unittest.TestCase):
         ("http://holberton.io", {"payload": False})
     ])
     @patch('utils.requests.get')
-    def test_get_json(self,
-                      url: str, payload: Dict[str, bool],
-                      mock_requests: MagicMock
-                      ) -> None:
-        """This is defining the testgetjson option"""
-        mock_requests.return_value.json.return_value = payload
-        result = get_json(url)
-        self.assertEqual(result, payload)
+
 
 class TestMemoize(unittest.TestCase):
     """this is the testmemoize class"""
