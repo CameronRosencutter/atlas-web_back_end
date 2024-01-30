@@ -8,14 +8,14 @@ from unittest.mock import patch, Mock
 from utils import access_nested_map, get_json, memoize
 
 class TestAccessNestedMap(unittest.TestCase):
-    """ TestAccessNestedMap class """
+    """this is the testaccessnestedmap class"""
     @parameterized.expand([
         ({"a": 1}, ("a",), 1),
         ({"a": {"b": 2}}, ("a",), {"b": 2}),
         ({"a": {"b": 2}}, ("a", "b"), 2),
     ])
     def test_access_nested_map(self, nested_map, path, expected_result):
-        """access_nested_map test method, checks for expected result"""
+        """this will check for the correct results"""
         result = access_nested_map(nested_map, path)
         self.assertEqual(result, expected_result)
 
@@ -25,6 +25,6 @@ class TestAccessNestedMap(unittest.TestCase):
     ])
     def test_access_nested_map_exception(
             self, nested_map, path, expected_exception_message):
-        """checks if method raises the correct exception"""
+        """validates if everything is correct"""
         with self.assertRaises(KeyError):
             access_nested_map(nested_map, path)
