@@ -28,3 +28,34 @@ class TestAccessNestedMap(unittest.TestCase):
         """validates if everything is correct"""
         with self.assertRaises(KeyError):
             access_nested_map(nested_map, path)
+
+class TestMemoize(unittest.TestCase):
+
+    class TestClass:
+
+        def a_method(self):
+            return 42
+
+        @memoize
+        def a_property(self):
+            return self.a_method()
+
+    def test_memoize(self):
+        # Create an instance of the TestClass
+        test_instance = self.TestClass()
+
+        # Mock the a_method using unittest.mock.patch
+        with patch.object(test_instance, 'a_method', return_value=42) as mock_method:
+            # Call a_property twice
+            result1 = test_instance.a_property()
+            result2 = test_instance.a_property()
+
+            # Assert that a_method is only called once
+            mock_method.assert_called_once()
+
+            # Assert that the results are correct
+            self.assertEqual(result1, 42)
+            self.assertEqual(result2, 42)
+
+if __name__ == '__main__':
+    unittest.main()
