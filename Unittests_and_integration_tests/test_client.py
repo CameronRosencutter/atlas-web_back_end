@@ -54,3 +54,28 @@ class TestGithubOrgClient(unittest.TestCase):
 
             # Assertions
             self.assertEqual(result, expected_public_repos_url)
+
+    def test_public_repos(self, org_name, mock_public_repos_url, mock_get_json):
+        """Test the public_repos method of GithubOrgClient."""
+        # Set up the expected result for the mock _public_repos_url
+        expected_public_repos_url = f'https://api.github.com/orgs/{org_name}/repos'
+
+        # Set up the expected payload for the mock get_json
+        expected_payload = [{'repo1': 'details1'}, {'repo2': 'details2'}]
+
+        # Configure the mock _public_repos_url return value
+        mock_public_repos_url.return_value = expected_public_repos_url
+
+        # Configure the mock get_json return value
+        mock_get_json.return_value = expected_payload
+
+        # Create an instance of GithubOrgClient
+        github_org_client = GithubOrgClient(org_name)
+
+        # Call the public_repos method
+        result = github_org_client.public_repos()
+
+        # Assertions
+        self.assertEqual(result, expected_payload)
+        mock_public_repos_url.assert_called_once()
+        mock_get_json.assert_called_once_with(expected_public_repos_url)
