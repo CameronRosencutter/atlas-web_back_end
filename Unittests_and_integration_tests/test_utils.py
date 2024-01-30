@@ -26,3 +26,30 @@ class TestAccessNestedMap(unittest.TestCase):
             access_nested_map(nested_map, path)
 
         self.assertEqual(str(context.exception), expected_message)
+
+class TestGetJson(unittest.TestCase):
+    """ TestGetJson class for utils.py
+    Args:
+        unittest (unittest.TestCase): Unit testing for utils.py
+    """
+    @parameterized.expand([
+        ('http://example.com', {'payload': True}),
+        ('http://holberton.io', {'payload': False}),
+    ])
+    def test_get_json(self, test_url, test_payload):
+        """ Test get_json method for utils.py
+        check if the method returns the result as expected
+        """
+        # mock the get_json function
+        mock = Mock()
+        # set the return value of the mock
+        mock.json.return_value = test_payload
+        # patch the requests.get to return the mock response object
+        with patch('requests.get') as mock_get:
+            # set the return value of the mock
+            mock_get.return_value = mock
+            # call the function using the test_url
+            result = get_json(test_url)
+            self.assertEqual(result, test_payload)
+            # assert that the mock was called once with the test_url
+            mock_get.assert_called_once_with(test_url)
