@@ -38,7 +38,8 @@ class TestGithubOrgClient(unittest.TestCase):
 
         # Assertions
         self.assertEqual(result, expected_result)
-        mock_get_json.assert_called_once_with(f'https://api.github.com/orgs/{org_name}')
+        mock_get_json.assert_called_once_with
+        (f'https://api.github.com/orgs/{org_name}')
 
     @parameterized.expand([
         ("google",),
@@ -85,3 +86,18 @@ class TestGithubOrgClient(unittest.TestCase):
         self.assertEqual(result, expected_payload)
         mock_public_repos_url.assert_called_once()
         mock_get_json.assert_called_once_with(expected_public_repos_url)
+
+class TestGithubOrgClient:
+    @pytest.mark.parametrize("repo, license_key, expected", [
+        ({"license": {"key": "my_license"}}, "my_license", True),
+        ({"license": {"key": "other_license"}}, "my_license", False),
+    ])
+    def test_has_license(self, repo, license_key, expected):
+        # Create an instance of your GithubOrgClient class
+        github_client = GithubOrgClient()
+
+        # Call the has_license method with the provided parameters
+        result = github_client.has_license(repo, license_key)
+
+        # Check if the result matches the expected value
+        assert result == expected
