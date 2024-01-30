@@ -43,23 +43,35 @@ class TestGetJson(unittest.TestCase):
 
 
 class TestMemoize(unittest.TestCase):
-    """this is the testmemoize class"""
+    '''Inherits from testcase,
+        unittest class for memoize
+        function'''
+    def __init__(self, methodName: str = "runTest") -> None:
+        super().__init__(methodName)
 
-    def test_memoize(self):
-        """ This is the testmemomize function"""
+    def test_memoize(self
+                     ) -> None:
+        '''Method asserts that output of
+            memoize is as expected'''
 
         class TestClass:
-            """This is just testing everything out"""
-            def __init__(self):
-                """ init method"""
-                self.call_count = 0
 
             def a_method(self):
-                """method method method method"""
-                self.call_count += 1
                 return 42
 
             @memoize
             def a_property(self):
-                """this is a property"""
                 return self.a_method()
+
+        with patch.object(TestClass, 'a_method',
+                          return_value=42) as mock_method:
+            instance = TestClass()
+            self.assertEqual(instance.a_property,
+                             mock_method.return_value)
+            self.assertEqual(instance.a_property,
+                             mock_method.return_value)
+            mock_method.assert_called_once()
+
+
+if __name__ == "__main__":
+    unittest.main()
