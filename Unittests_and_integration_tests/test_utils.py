@@ -48,3 +48,25 @@ class TestGetJson(unittest.TestCase):
         mock_requests.return_value.json.return_value = payload
         result = get_json(url)
         self.assertEqual(result, payload)
+
+class TestMemoize(unittest.TestCase):
+    """this is the testmemoize class"""
+
+    def test_memoize(self):
+        """ This is the testmemomize function"""
+
+        class TestClass:
+            """This is just testing everything out"""
+            def __init__(self):
+                """ init method"""
+                self.call_count = 0
+
+            def a_method(self):
+                """method method method method"""
+                self.call_count += 1
+                return 42
+
+            @memoize
+            def a_property(self):
+                """this is a property"""
+                return self.a_method()
