@@ -9,6 +9,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
+    """This is the function index"""
     return render_template('0-index.html')
 
 
