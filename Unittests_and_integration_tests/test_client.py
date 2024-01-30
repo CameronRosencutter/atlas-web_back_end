@@ -38,10 +38,9 @@ class TestGithubOrgClient(unittest.TestCase):
 
         # Assertions
         self.assertEqual(result, expected_result)
-        mock_get_json.assert_called_once_with
-        (f'https://api.github.com/orgs/{org_name}')
-        
-        @parameterized.expand([
+        mock_get_json.assert_called_once_with(f'https://api.github.com/orgs/{org_name}')
+
+    @parameterized.expand([
         ("google",),
         ("abc",),
     ])
