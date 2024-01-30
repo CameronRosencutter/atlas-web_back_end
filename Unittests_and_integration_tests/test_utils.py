@@ -32,7 +32,7 @@ class TestAccessNestedMap(unittest.TestCase):
 
 
 class TestMemoize(unittest.TestCase):
-
+"""This is the testmemoize class"""
     class TestClass:
 
         def a_method(self):
