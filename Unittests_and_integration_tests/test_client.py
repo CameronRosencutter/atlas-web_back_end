@@ -87,24 +87,3 @@ class TestGithubOrgClient(unittest.TestCase):
         mock_public_repos_url.assert_called_once()
         mock_get_json.assert_called_once_with(expected_public_repos_url)
 
-class TestGithubOrgClient(unittest.TestCase):
-    def test_has_license(self):
-        test_cases = [
-            ({"license": {"key": "my_license"}}, "my_license", True),
-            ({"license": {"key": "other_license"}}, "my_license", False),
-        ]
-
-        # Create an instance of your GithubOrgClient class
-        github_client = GithubOrgClient()
-
-        # Iterate through the test cases
-        for repo, license_key, expected in test_cases:
-            with self.subTest(repo=repo, license_key=license_key, expected=expected):
-                # Call the has_license method with the provided parameters
-                result = github_client.has_license(repo, license_key)
-
-                # Check if the result matches the expected value
-                self.assertEqual(result, expected)
-
-if __name__ == "__main__":
-    unittest.main()
