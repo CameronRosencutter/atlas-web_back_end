@@ -43,10 +43,4 @@ class Cache:
 
     def get(self, key: str, fn: Callable = None) -> Union[str, bytes, int, float]:
         data = self._redis.get(key)
-        if data is None:
-            return None
-        if fn:
-            return fn(data)
-        return data
-
-    def get_str(self, key: str) -> Unio
+        if da
