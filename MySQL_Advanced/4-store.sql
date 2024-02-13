@@ -1,14 +1,16 @@
--- Create the trigger
+-- 4-store.sql
+-- this is the items in store
+
 DELIMITER //
 
-CREATE TRIGGER after_order_decrease
+CREATE TRIGGER decrease_quantity_after_order
 AFTER INSERT ON orders
 FOR EACH ROW
 BEGIN
-    -- Decrease the quantity of the item in the items table
     UPDATE items
-    SET quantity = quantity - NEW.quantity_ordered
-    WHERE item_id = NEW.item_id;
-END//
+    SET quantity = quantity - NEW.number
+    WHERE name = NEW.item_name;
+END;
+//
 
 DELIMITER ;
