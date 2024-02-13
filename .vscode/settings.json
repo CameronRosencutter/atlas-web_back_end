@@ -1,0 +1,33 @@
+{
+    "sqltools.connections": [
+        {
+            "mysqlOptions": {
+                "authProtocol": "default",
+                "enableSsl": "Disabled"
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 33060,
+            "driver": "MariaDB",
+            "name": "MYSQL LOCAL",
+            "database": "metal_bands",
+            "username": "CAMERON",
+            "askForPassword": true
+        },
+        {
+            "mysqlOptions": {
+                "authProtocol": "default",
+                "enableSsl": "Disabled"
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 33060,
+            "driver": "MariaDB",
+            "name": "TESTSQL",
+            "database": "metal_bands.sql",
+            "password": "DOG",
+            "username": "CAMERON",
+            "group": "FFFF"
+        }
+    ]
+}
