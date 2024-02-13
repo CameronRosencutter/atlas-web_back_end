@@ -1,7 +1,5 @@
-#!/usr/bin/env python3
-"""
-Main file
-"""
+-- 0-uniq-users.sql
+-- This will check the id,email, and name
 
 CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
