@@ -9,6 +9,7 @@ from typing import Union, Callable
 from functools import wraps
 
 class Cache:
+    """This is the class cache"""
     def __init__(self):
         self._redis = redis.Redis()
         self._redis.flushdb()
@@ -69,6 +70,7 @@ class Cache:
             input_str = input_data.decode('utf-8')
             output_str = output_data.decode('utf-8')
             print(f"{method_name}(*{input_str}) -> {output_str}")
+
 
 # Test cases
 cache = Cache()
